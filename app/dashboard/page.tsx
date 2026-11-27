@@ -41,6 +41,7 @@ export default function HomePage() {
   const [form, setForm] = useState({ name: "", price: "", stock: "" });
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("register") === "1") setAuthMode("signup");
     const client = supabase;
     if (!client) {
       setAuthReady(true);
