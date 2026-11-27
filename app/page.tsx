@@ -15,7 +15,7 @@ type Store = { id: string; name: string; slug: string; is_published: boolean };
 type ProductRow = { id: string; name: string; category: string; price_dzd: number; stock: number; status: string };
 
 const navGroups = [
-  { title: "BOUTIQUE", items: [{ label: "Accueil", icon: Home }, { label: "Commandes", icon: ClipboardList, count: "4" }, { label: "Produits", icon: Package }, { label: "Clients", icon: Users }] },
+  { title: "BOUTIQUE", items: [{ label: "Accueil", icon: Home }, { label: "Commandes", icon: ClipboardList, count: "0" }, { label: "Produits", icon: Package }, { label: "Clients", icon: Users }] },
   { title: "VENTE", items: [{ label: "Canaux de vente", icon: ShoppingBag }, { label: "Livraison", icon: Truck }] },
   { title: "ANALYSE", items: [{ label: "Statistiques", icon: ChartNoAxesCombined }] },
 ];
@@ -196,7 +196,7 @@ export default function HomePage() {
         <h1>Créez votre boutique</h1>
         <p className="gate-intro">Choisissez son nom et son lien. Vous pourrez les modifier plus tard.</p>
         <form className="gate-form" onSubmit={createStore}>
-          <label>Nom de la boutique<input required minLength={2} maxLength={80} value={storeName} onChange={(e) => { setStoreName(e.target.value); setStoreSlug(e.target.value.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")); }} placeholder="Ex. Atelier Naya" /></label>
+          <label>Nom de la boutique<input required minLength={2} maxLength={80} value={storeName} onChange={(e) => { setStoreName(e.target.value); setStoreSlug(e.target.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")); }} placeholder="Ex. Atelier Naya" /></label>
           <label>Adresse de la boutique<div className="slug-field"><input required pattern="[a-z0-9]+(-[a-z0-9]+)*" value={storeSlug} onChange={(e) => setStoreSlug(e.target.value.toLowerCase())} placeholder="atelier-naya" /><span>.ysn-store.vercel.app</span></div></label>
           {authMessage && <div className="gate-message">{authMessage}</div>}
           <button className="primary-button gate-submit" disabled={busy}>{busy ? "Création…" : "Créer ma boutique"} <ArrowRight size={16} /></button>
