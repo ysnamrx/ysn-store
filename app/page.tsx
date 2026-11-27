@@ -41,7 +41,8 @@ export default function HomePage() {
   const [form, setForm] = useState({ name: "", price: "", stock: "" });
 
   useEffect(() => {
-    if (!supabase) {
+    const client = supabase;
+    if (!client) {
       setAuthReady(true);
       return;
     }
@@ -56,7 +57,7 @@ export default function HomePage() {
         setAuthReady(true);
         return;
       }
-      const { data: ownedStore, error } = await supabase
+      const { data: ownedStore, error } = await client
         .from("stores")
         .select("id,name,slug,is_published")
         .eq("owner_id", user.id)
@@ -65,7 +66,7 @@ export default function HomePage() {
       if (error) setAuthMessage("Impossible de charger votre boutique. Réessayez.");
       setStore(ownedStore as Store | null);
       if (ownedStore) {
-        const { data: rows } = await supabase
+        const { data: rows } = await client
           .from("products")
           .select("id,name,category,price_dzd,stock,status")
           .eq("store_id", ownedStore.id)
@@ -86,8 +87,8 @@ export default function HomePage() {
       }
       setAuthReady(true);
     };
-    supabase.auth.getSession().then(({ data }) => syncSession(data.session));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    client.auth.getSession().then(({ data }) => syncSession(data.session));
+    const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
       void syncSession(session);
     });
     return () => {
